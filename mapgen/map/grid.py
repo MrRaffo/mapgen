@@ -6,18 +6,19 @@ class Grid(object):
 
         """A 2D data structure"""
 
-        def __init__(self, width, height, default=None):
+        def __init__(self, width, height, dtype=None):
                 
                 self._width = width
                 self._height = height
                 
                 # generate data
-                self.data = np.empty([width, height])
+                dataType = np.dtype(dtype)
+                self.data = np.empty([width, height], dtype=dataType)
 
-                if default is not None:
+                if dtype is not None:
                         for x in range(width):
                                 for y in range(height):
-                                        self.data[x, y] = default
+                                        self.data[x, y] = dtype()
 
         @property
         def width(self):
@@ -52,7 +53,13 @@ class Grid(object):
                 else:
                         self.data[x, y] = value
 
-        #======================
-        #  ANALYSIS
-        #======================
+        #===============
+        # MANIPULATION
+        #===============
+
+        def forEach(self, func):
+                """call func on every item in the grid"""
+                for x in range(self._width):
+                        for y in range(self._height):
+                                func(self.data[x, y], x, y)
 

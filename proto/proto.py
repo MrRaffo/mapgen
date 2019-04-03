@@ -12,7 +12,7 @@ def genNoiseGrid(size, freq=16.0):
         for y in range(size):
                 row = []
                 for x in range(size):
-                        row.append(pnoise2(x / freq, y / freq, octaves=16))
+                        row.append(pnoise2((x) / freq, y / freq, octaves=4))
                 grid.append(row)
 
         return grid
@@ -38,7 +38,7 @@ def drawGrid(size):
         
         screen.fill((0, 0, 0))
 
-        pgrid = genNoiseGrid(size, 180)
+        pgrid = genNoiseGrid(size, 200)
         cgrid = colorGrid(pgrid)
 
 
