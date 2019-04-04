@@ -1,70 +1,73 @@
 from map.grid import *
 from map.cell import *
+from map.generator import *
+from systems.Renderer import *
 
 from noise import *
-
 from math import *
 
 from pygame.locals import *
 import pygame
 
-grid = Grid(2, 2, Cell)
+class MapGenerator(object):
+        
+        def __init__(self, w, h):
+                pygame.init()
 
-def myfunc(cell, x, y):
-        cell._pelevation = pnoise2((x + 300) / 16.0, (y + 200) / 16.0, octaves=8)
+                self.w = w
+                self.h = h
+                self.fps = 60
 
-def myprint(cell, x, y):
-        print("Cell (%d, %d):" % (x, y))
-        print(cell)
+                self.renderer = Renderer(w, h, w, h)
+                pygame.display.set_caption("Map Generator")
 
-grid.forEach(myfunc)
-# grid.forEach(myprint)
+                self.clock = pygame.time.Clock()
+                self.lastTick = pygame.time.get_ticks()
 
-def makeGrid(w, h):
-        return Grid(w, h, Cell)
+                self.generator = Generator()
 
-eXOffset = 300
-eYOffset = 200
-eFreq = 180
-eOct  = 32
+        
+        def setup(self):
+                self.grid = self.generator.makeGrid(self.w, self.h)
 
-mXOffset = 700
-mYOffset = 800
-mFreq = 200
-mOct = 4
+        def loop(self):
 
-tXOffset = 0
-tYOffset = 0
-tFreq = 200
-tOct  = 4
+                option = 1
+                running = True
+                while running:
 
-def noiseFunc(cell, x, y):
-        cell._pelevation = pnoise2((x + eXOffset) / eFreq, (y + eYOffset) / eFreq, octaves = eOct)
-        cell._pmoisture = pnoise2((x + mXOffset) / mFreq, (y + mYOffset) / mFreq, octaves = mOct)
-        cell._ptemperature = pnoise2((x + tXOffset) / tFreq, (y + tYOffset) / tFreq, octaves = tOct)
+                        # draw the thing
+                        self.renderer.clear()
 
-def colorize(cell, x, y):
-        cell.setElevationColor()
+                        if option == 0:
+                                self.renderer.drawTerrain(self)
+                        if option == 1:
+                                self.renderer.drawElevationMap(self)
+                        if option == 2:
+                                self.renderer.drawMoistureMap(self)
+                        if option == 3:
+                                self.renderer.drawTemperatureMap(self)
 
-def drawGrid(width, height):
+                        self.renderer.update()
 
-        #TODO - fix this awful mess, allow noisemaps for each variable
-        # to be seen
-        pygame.init()
+                        for event in pygame.event.get():
+                                if event.type == QUIT:
+                                        running = False
+                                if event.type == KEYDOWN:
+                                        if event.key == K_ESCAPE:
+                                                running = False
+                                        
+                                        if event.key == K_0:
+                                                option = 0
+                                        if event.key == K_1:
+                                                option = 1
+                                        if event.key == K_2:
+                                                option = 2
+                                        if event.key == K_3:
+                                                option = 3
 
-        screen = pygame.display.set_mode([width, height], pygame.HWSURFACE)
-        pygame.display.set_caption("Perlin Noise")
+                        self.clock.tick(self.fps)
 
-        screen.fill((0, 0, 0))
-
-        grid = Grid(width, height, Cell)
-        grid.forEach(noiseFunc)
-        grid.forEach(colorize)
-
-        for x in range(width):
-                for y in range(height):
-                        pygame.draw.rect(screen, grid.getData(x, y)._color, (x, y, 1, 1))
-
-        pygame.display.update()
-
-drawGrid(640, 480)
+mapgen = MapGenerator(800, 800)
+mapgen.setup()
+mapgen.loop()

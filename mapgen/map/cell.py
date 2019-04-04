@@ -13,8 +13,6 @@ class Cell(object):
                 self._moisture = 0
                 self._temperature = 0
 
-                self._color = (0, 0, 0, 0)
-
         def __str__(self):
                 return "Elevation: {} ({})\nMoisture: {} ({})\nTemperature: {} ({})\n".format(self._elevation, self._pelevation, self._moisture, self._pmoisture, self._temperature, self._ptemperature)
         

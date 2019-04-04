@@ -42,12 +42,12 @@ class Grid(object):
         def getHeight(self):
                 return self._height
 
-        def getData(self, x, y):
+        def get(self, x, y):
                 if x < 0 or x >= self._width or y < 0 or y >= self._height:
                         return None
                 return self.data[x, y]
 
-        def setData(self, x, y, value):
+        def set(self, x, y, value):
                 if x < 0 or x >= self._width or y < 0 or y>= self._height:
                         return
                 else:
