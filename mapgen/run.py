@@ -42,11 +42,13 @@ class MapGenerator(object):
                         if option == 0:
                                 self.renderer.drawTerrain(self)
                         if option == 1:
-                                self.renderer.drawElevationMap(self)
+                                self.renderer.drawMap(self, "elevation")
                         if option == 2:
-                                self.renderer.drawMoistureMap(self)
+                                self.renderer.drawMap(self, "moisture")
                         if option == 3:
-                                self.renderer.drawTemperatureMap(self)
+                                self.renderer.drawMap(self, "temperature")
+                        if option == 4:
+                                self.renderer.drawMap(self, "elevation")
 
                         self.renderer.update()
 
@@ -65,6 +67,8 @@ class MapGenerator(object):
                                                 option = 2
                                         if event.key == K_3:
                                                 option = 3
+                                        if event.key == K_4:
+                                                option = 4
 
                         self.clock.tick(self.fps)
 

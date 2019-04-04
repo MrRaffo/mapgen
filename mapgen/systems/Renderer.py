@@ -26,41 +26,27 @@ class Renderer(object):
         def drawTerrain(self, mapgen):
                 self.screen.fill((0, 255, 255, 255))
 
-        def drawElevationMap(self, mapgen):
-                layers = mapgen.generator.elevation["layers"]
+        def drawMap(self, mapgen, typename):
+                if typename not in mapgen.generator.data:       
+                        print("Unable to Render, no data!")
+                        return
+
+                layers = mapgen.generator.data[typename]["layers"]
                 colors = []
                 step = 255 / layers
                 for x in range(layers):
-                        colors.append((40, step * x, 40, 255))
+                        if typename == "elevation":
+                                colors.append((step * x / 4, step * x, step * x / 4))
+                        elif typename == "moisture":
+                                colors.append((0, step * x / 2, step * x, 255))
+                        elif typename == "temperature":
+                                colors.append((step * x, step * x / 4, step * x / 4, 255))
+                        else:
+                                colors.append((step * x, step * x, step * x, 255))
 
                 for x in range(self.w):
                         for y in range(self.h):
-                                col = floor(mapgen.grid.get(x, y).pelevation * (layers / 2) + layers / 2)
-                                self.surface.set_at((x, y), colors[col])
-                        
-
-        def drawMoistureMap(self, mapgen):
-                layers = mapgen.generator.moisture["layers"]
-                colors = []
-                step = 255 / layers
-                for x in range(layers):
-                        colors.append((0, step * x / 2, step * x,  255))
-
-                for x in range(self.w):
-                        for y in range(self.h):
-                                col = floor(mapgen.grid.get(x, y).pmoisture * (layers / 2) + layers / 2)
+                                col = mapgen.grid.get(x, y).data[typename]["layer"]
                                 self.surface.set_at((x, y), colors[col])
 
-        def drawTemperatureMap(self, mapgen):
-                layers = mapgen.generator.temperature["layers"]
-                colors = []
-                step = 255 / layers
-                for x in range(layers):
-                        colors.append((step * x, step * x / 4, step * x / 4,  255))
-
-                for x in range(self.w):
-                        for y in range(self.h):
-                                col = floor(mapgen.grid.get(x, y).ptemperature * (layers / 2) + layers / 2)
-                                self.surface.set_at((x, y), colors[col])
-
-
+                
