@@ -5,6 +5,7 @@ from systems.Renderer import *
 
 from noise import *
 from math import *
+import sys
 
 from pygame.locals import *
 import pygame
@@ -24,12 +25,12 @@ class MapGenerator(object):
                 self.clock = pygame.time.Clock()
                 self.lastTick = pygame.time.get_ticks()
 
-                self.generator = Generator()
+                self.generator = Generator(w, h)
 
         
         def setup(self):
                 self.grid = self.generator.makeGrid(self.w, self.h)
-
+      
         def loop(self):
 
                 option = 1
@@ -72,6 +73,9 @@ class MapGenerator(object):
 
                         self.clock.tick(self.fps)
 
-mapgen = MapGenerator(800, 800)
+if len(sys.argv) < 2:
+        mapgen = MapGenerator(800, 800)
+else:
+        mapgen = MapGenerator(int(sys.argv[1]), int(sys.argv[2]))
 mapgen.setup()
 mapgen.loop()

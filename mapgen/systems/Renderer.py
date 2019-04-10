@@ -24,7 +24,15 @@ class Renderer(object):
                 pygame.display.flip()
 
         def drawTerrain(self, mapgen):
-                self.screen.fill((0, 255, 255, 255))
+                landCol = (0, 200, 50, 255)
+                seaCol = (0, 50, 255, 255)
+
+                for x in range(self.w):
+                        for y in range(self.h):
+                                biome = mapgen.grid.get(x, y).data["biome"]["type"]
+                                color = Color(mapgen.generator.biomes[biome]["color"])
+                                
+                                self.surface.set_at((x, y), color)
 
         def drawMap(self, mapgen, typename):
                 if typename not in mapgen.generator.data:       
