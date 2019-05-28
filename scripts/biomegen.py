@@ -1,7 +1,29 @@
-#!/bin/python3
+#!/usr/bin/python3
 
 import sys
 from color import *
+
+defaults = { "sealevel": 0.5,
+             "evariance": 0.5,
+             "mvariance": 0.5,
+             "tvariance": 0.5 }
+
+def parseConfig(filename):
+        """Read initial values from file
+        
+        read info, such as sealevel, from file and generate the rest of the 
+        data using it
+        """
+
+        with open(filename, "r") as f:
+                for line in f:
+                        var, value = line[:-1].split("=")
+                        if var in defaults:
+                                defaults[var] = float(value)
+
+def printDefaults():
+        for key in defaults:
+                print("%s:%f" % (key, defaults[key]))
 
 def main():
         print("Biome Config Generator")
@@ -24,5 +46,5 @@ def main():
                 f.write("colour=%s\n" % (baseColor.shade((i*step))).getStr())
         f.close()
                 
-
-main()
+parseConfig("scripts/world.cfg")
+printDefaults()

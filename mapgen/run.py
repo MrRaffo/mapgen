@@ -5,6 +5,7 @@ from systems.Renderer import *
 
 from noise import *
 from math import *
+import random
 import sys
 
 from pygame.locals import *

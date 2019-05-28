@@ -8,14 +8,14 @@ except ImportError:
 config = {
     'description'       :   'My Project',
     'author'            :   'Paul Rafferty',
-    'url'               :   'URL to get it.',
-    'download_url'      :   'Where to download it.',
+    'url'               :   'github.com/mrraffo/mapgen',
+    'download_url'      :   'github.com/mrraffo/mapgen',
     'author_email'      :   'paul_raffo@hotmail.com',
     'version'           :   '0.1',
-    'install_requires'  :   ['nose'],
-    'packages'          :   ['NAME'],
+    'install_requires'  :   ['nose', 'pygame'],
+    'packages'          :   ['mapgen'],
     'scripts'           :   [],
-    'name'              :   'projectname'
+    'name'              :   'Mapgen'
 }
 
 setup(**config)
